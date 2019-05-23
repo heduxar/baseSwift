@@ -8,41 +8,41 @@
 //+Добавить в структуры метод с одним аргументом типа перечисления, который будет менять свойства структуры в зависимости от действия.
 //+Инициализировать несколько экземпляров структур. Применить к ним различные действия.
 //+Вывести значения свойств экземпляров в консоль.
-enum carMakers {
+enum CarMakers {
     case Lexus, Volvo, BMW, Mercedes, Audi, Porsche
 }
-enum truckMakers {
+enum TruckMakers {
     case Volvo, Man, Mersedes, Iveco, Freightliner
 }
-enum engineStatus: String {
+enum EngineStatus: String {
     case on = "Двигатель работает"
     case off = "Двигатель выключен"
 }
-enum windowsStatus: String {
+enum WindowsStatus: String {
     case opened = "Окна открыты"
     case closed = "Окна закрыты"
 }
-enum capacity{
+enum Capacity{
     case load
     case release
 }
 
-struct car {
-    let makeBy : carMakers
+struct Car {
+    let makeBy : CarMakers
     let madeY : Int
     var bagArea : Double = 100
-    var engine : engineStatus {
+    var engine : EngineStatus {
         didSet {
             oldValue == .on ? print(self.engine.rawValue) : print(self.engine.rawValue)
         }
     }
-    var windows : windowsStatus {
+    var windows : WindowsStatus {
         didSet {
             oldValue == .opened ? print("Окна закрыты") : print("Окна открыты")
         }
     }
     var bagOccuped: Double = 0
-    mutating func engineStatus(mode: engineStatus){
+    mutating func engineStatus(mode: EngineStatus){
         switch mode {
         case .on:
             self.engine = .on
@@ -50,7 +50,7 @@ struct car {
             self.engine = .off
         }
     }
-    mutating func windowsStatus(mode: windowsStatus){
+    mutating func windowsStatus(mode: WindowsStatus){
         switch mode {
         case .opened:
             self.windows = .opened
@@ -66,7 +66,7 @@ struct car {
         self.windows = .closed
     }
     
-    mutating func cargo(value:Double, mode: capacity){
+    mutating func cargo(value:Double, mode: Capacity){
         guard self.bagArea>value else {
             return print("Не верный объем груза: \(value)")
         }
@@ -79,7 +79,7 @@ struct car {
             print("Выгрузили: \(value) Свободно: \(self.bagArea-self.bagOccuped) Остаток груза: \(self.bagOccuped)")
         }
     }
-    init(model: carMakers, year: Int, baggage: Double, engineStatus: engineStatus, windowsStatus: windowsStatus){
+    init(model: CarMakers, year: Int, baggage: Double, engineStatus: EngineStatus, windowsStatus: WindowsStatus){
         self.makeBy = model
         self.madeY = year
         self.bagArea = baggage
@@ -88,23 +88,23 @@ struct car {
     }
 }
 
-struct truck {
-    let makeBy : truckMakers
+struct Truck {
+    let makeBy : TruckMakers
     let madeY : Int
     let bagArea : Double
-    var engine : engineStatus {
+    var engine : EngineStatus {
         willSet {
             newValue == .on ? print("Двигатель запускается") : print("Двигатель отлючается")
         }
     }
-    var windows : windowsStatus {
+    var windows : WindowsStatus {
         didSet {
             oldValue == .opened ? print("Окна закрыты") : print("Окна открыты")
         }
     }
     var bagOccuped: Double = 0
     var bagSum : Double = 0
-    mutating func engineStatus(mode: engineStatus){
+    mutating func engineStatus(mode: EngineStatus){
         switch mode {
         case .on:
             self.engine = .on
@@ -112,7 +112,7 @@ struct truck {
             self.engine = .off
         }
     }
-    mutating func windowStatus(mode: windowsStatus){
+    mutating func windowStatus(mode: WindowsStatus){
         switch mode {
         case .opened:
             self.windows = .opened
@@ -120,7 +120,7 @@ struct truck {
             self.windows = .closed
         }
     }
-    mutating func cargo(value:Double, mode: capacity){
+    mutating func cargo(value:Double, mode: Capacity){
         guard (self.bagArea-self.bagOccuped)>value else {
             return print("Слишком большой объем груза: \(value)")
         }
@@ -134,7 +134,7 @@ struct truck {
             print("Выгрузили: \(value) Свободно: \(self.bagArea-self.bagOccuped) Остаток груза в кузове: \(self.bagOccuped)")
         }
     }
-    init(model: truckMakers, year: Int, cargo: Double, engineStat: engineStatus, windowsStatus: windowsStatus){
+    init(model: TruckMakers, year: Int, cargo: Double, engineStat: EngineStatus, windowsStatus: WindowsStatus){
         self.makeBy = model
         self.madeY = year
         self.bagArea = cargo
@@ -144,7 +144,7 @@ struct truck {
 }
 
 
-var myCar =  car (model: .Lexus, year: 2019, baggage: 350, engineStatus: .on, windowsStatus: .closed)
+var myCar =  Car (model: .Lexus, year: 2019, baggage: 350, engineStatus: .on, windowsStatus: .closed)
 myCar.engineStatus(mode: .on)
 myCar.engineStatus(mode: .off)
 myCar.cargo(value: 20, mode: .load)
@@ -152,7 +152,7 @@ myCar.cargo(value: 10, mode: .release)
 print(myCar.engine.rawValue)
 print(myCar)
 
-var myTruck = truck (model: .Freightliner, year: 2018, cargo: 40000, engineStat: .on, windowsStatus: .opened)
+var myTruck = Truck (model: .Freightliner, year: 2018, cargo: 40000, engineStat: .on, windowsStatus: .opened)
 
 myTruck.cargo(value: 20000, mode: .load)
 myTruck.engineStatus(mode: .on)
